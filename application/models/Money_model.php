@@ -48,7 +48,9 @@ class Money_model extends MY_Model {
 			$this->db->where('moneys.user_id', $data['company']);
 		}
 		if (isset($data['opt3'])) {
-			$this->db->like('users.company', $data['keyword']);
+			$this->db->or_like('users.company', $data['keyword']);
+			$this->db->or_like('moneys.detail', $data['keyword']);
+			$this->db->or_like('moneys.kg', $data['keyword']);
 		}
 		$this->db->order_by('moneys.date', 'asc');
 		$query = $this->db->get();
@@ -68,6 +70,8 @@ class Money_model extends MY_Model {
 			$this->db->or_like('users.company', $data['keyword']);
 			$this->db->or_like('moneys.save_money', $data['keyword']);
 			$this->db->or_like('moneys.use_money', $data['keyword']);
+			$this->db->or_like('moneys.detail', $data['keyword']);
+			$this->db->or_like('moneys.kg', $data['keyword']);
 		}
 		$this->db->where('moneys.user_id', $data['user_id']);
 		$this->db->order_by('moneys.date', 'asc');

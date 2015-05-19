@@ -129,10 +129,35 @@ class Order extends MY_Controller {
 	public function submit()
 	{
 		// 空的不給送單
-		if ( empty($this->order_img_model->select_by_userId($this->session->userdata('user_id')))) {
+		if ( empty($query = $this->order_img_model->select_by_userId($this->session->userdata('user_id')))) {
 			redirect('store/order/create');
 			return true;
 		}
+		// 判斷項目尚未填寫
+		foreach ($query as $value) {
+			if ( empty($this->order_sub_model->select_by_orderImgId($value->order_img_id)) ) {
+				$this->load->view('failure', array(
+					'message' => '您還有商品 項目 以及 位置 未填選唷'
+				));
+				return true;
+			}
+		}
+
+		// 判斷位置沒填入
+		foreach ($this->order_img_model->select_by_userId($this->session->userdata('user_id')) as $value) {
+			if ( $value->position == '' ) {
+				$this->load->view('failure', array(
+					'message' => '您還有商品位置未填選唷'
+				));
+				return true;
+			}
+		}
+
+		// 所有都是空的也不給送
+		if ( empty($this->order_img_model->select_by_userId($this->session->userdata('user_id') ) )) {
+			redirect('store/order/create');
+			return true;
+		}	
 		date_default_timezone_set("Asia/Taipei");
 		$data = array(
 			'user_id' => $this->session->userdata('user_id'),
@@ -147,6 +172,37 @@ class Order extends MY_Controller {
 		}	
 		$this->order_img_model->update_by_userId_orderId($this->session->userdata('user_id'), 0, array('order_id' => $order_id));
 		redirect('store/order');
+		return true;
+	}
+
+
+	public function search()
+	{
+		$states = $this->order_model->select_all_state();
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('store/order_search', array(
+				'states' => $states
+			));
+			return true;
+		}
+		$data['user_id'] = $this->session->userdata('user_id');
+		$orders = $this->order_model->search_at_user($data);
+		// 算出總價
+		foreach ($orders as $value) {
+			$total_price = 0;
+			$query = $this->order_img_model->select_by_userId($this->session->userdata('user_id'), $value->order_id);
+			foreach ($query as $value2) {
+				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
+				foreach ($sub as $value3) {
+					$total_price += $value3->amount * $value3->price;
+				}
+			}
+			$value->total_price = $total_price;
+		}
+		$this->load->view('store/order_index', array(
+			'orders' => $orders,
+			'data' => $data
+		));
 		return true;
 	}
 
@@ -254,35 +310,87 @@ class Order extends MY_Controller {
 		$this->order_sub_model->insert_data($data);
 		redirect('store/order/detail/'.$order_id);
 		return true;
-	}
+	}	
 
-	public function search()
+	public function message($order_img_id = null)
 	{
-		$states = $this->order_model->select_all_state();
-		if ( ! $data = $this->input->post() ) {
-			$this->load->view('store/order_search', array(
-				'states' => $states
+		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
+			$this->load->view('failure', array(
+				'message' => '查無此子訂單'
 			));
 			return true;
 		}
-		$data['user_id'] = $this->session->userdata('user_id');
-		$orders = $this->order_model->search_at_user($data);
-		// 算出總價
-		foreach ($orders as $value) {
-			$total_price = 0;
-			$query = $this->order_img_model->select_by_userId($this->session->userdata('user_id'), $value->order_id);
-			foreach ($query as $value2) {
-				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
-				foreach ($sub as $value3) {
-					$total_price += $value3->amount * $value3->price;
-				}
-			}
-			$value->total_price = $total_price;
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('store/order_message', array(
+				'store_message' => $query->store_message
+			));
+			return true;
 		}
-		$this->load->view('store/order_index', array(
-			'orders' => $orders,
-			'data' => $data
-		));
+
+		$data['order_img_id'] = $order_img_id;
+		$this->order_img_model->update_data($data);
+		redirect('store/order/create');
+		return true;
+	}
+
+	public function detail_message($order_img_id = null, $order_id = null)
+	{
+		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
+			$this->load->view('failure', array(
+				'message' => '查無此子訂單'
+			));
+			return true;
+		}
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('store/order_message', array(
+				'store_message' => $query->store_message
+			));
+			return true;
+		}
+
+		$data['order_img_id'] = $order_img_id;
+		$this->order_img_model->update_data($data);
+		redirect('store/order/detail/'.$order_id);
+		return true;
+	}
+
+	public function position($order_img_id = null)
+	{
+		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
+			$this->load->view('failure', array(
+				'message' => '查無此子訂單'
+			));
+			return true;
+		}
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('store/order_position', array(
+				'position' => $query->store_message
+			));
+			return true;
+		}
+		$data['order_img_id'] = $order_img_id;
+		$this->order_img_model->update_data($data);
+		redirect('store/order/create');
+		return true;
+	}
+
+	public function detail_position($order_img_id = null, $order_id = null)
+	{
+		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
+			$this->load->view('failure', array(
+				'message' => '查無此子訂單'
+			));
+			return true;
+		}
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('store/order_position', array(
+				'position' => $query->store_message
+			));
+			return true;
+		}
+		$data['order_img_id'] = $order_img_id;
+		$this->order_img_model->update_data($data);
+		redirect('store/order/detail/'.$order_id);
 		return true;
 	}
 

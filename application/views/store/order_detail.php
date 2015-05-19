@@ -51,6 +51,18 @@
 				<div class="text-center"><a href="<?=base_url('store/order/detail_create_sub/'.$value->order_img_id.'/'.$query[0]->order_id)?>" class="btn btn-primary">+新增項目</a>	</div>
 			<?php endif ?>
 				<div class="text-center"><h3>$ <?= number_format($price)?></h3></div>
+				<hr>
+			<?php if ( $query[0]->state_id == 1): ?>
+				<div class="pull-right">
+					目前位置: <?= $value->position?> <a href="<?= base_url('store/order/detail_position/'.$value->order_img_id.'/'.$value->order_id)?>" class="btn btn-success">選擇位置</a>
+				</div>
+			<?php else: ?>
+				<p class="pull-right">目前位置: <?= $value->position?></p><br>
+			<?php endif ?>
+			<?php if ( $query[0]->state_id == 1): ?>
+				<a href="<?= base_url('store/order/detail_message/'.$value->order_img_id.'/'.$value->order_id)?>" class="btn btn-warning">留言</a>
+			<?php endif ?>
+				<div class="well"><?=$value->store_message?></div>
 			</div>			
 		</div>
 		<hr>
@@ -58,6 +70,7 @@
 	<div class="row">
 		<div class="col-xs-4"></div>
 		<div class="col-xs-8"><h2 class="text-danger text-center">$ <?= number_format($price_total)?></h2></div>
+
 	</div>
 	<!-- <div class="text-center"><a href="javascript:if(confirm('確定要送出訂單了嗎？'))location.href='<?=base_url('store/order/submit')?>'" class="btn btn-primary btn-lg" <?php if(empty($query)){ echo "disabled";}?> >送出訂單</a></div> -->
 </section>

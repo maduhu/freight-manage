@@ -23,6 +23,8 @@
 			<td>入帳金額</td>
 			<td>使用金額</td>
 			<td>存金</td>
+			<td>kg</td>
+			<td>使用明細</td>
 		</tr>
 		<?php $temp = []?>
 		<?php foreach ($moneys as $value): //計算有幾個使用者，把PK存進來?>
@@ -51,6 +53,8 @@
 				<td class="text-success"><?= number_format($value->save_money)?></td>	
 				<td class="text-info"><?= number_format($value->use_money)?></td>	
 				<td class="text-danger"><?= number_format($value->balance)?></td>
+				<td><?= $value->kg?></td>
+				<td><?= $value->detail?></td>
 			</tr>
 		<?php endforeach ?>
 	</table>

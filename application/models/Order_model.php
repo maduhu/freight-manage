@@ -44,6 +44,17 @@ class Order_model extends MY_Model {
 		return $query->result();
 	}
 
+	public function select_all()
+	{
+		$this->db->select('*');
+		$this->db->from('orders');
+		$this->db->join('users', 'orders.user_id = users.user_id');
+		$this->db->join('states', 'orders.state_id = states.state_id');
+		$this->db->order_by('orders.order_id', 'desc');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function select_all_state()
 	{
 		$query = $this->db->get('states');

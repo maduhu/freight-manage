@@ -35,6 +35,18 @@
     </div>
   </div>
   <div class="form-group">
+    <label for="" class="col-sm-2 control-label">kg</label>
+    <div class="col-sm-9">
+      <input type="text" name="kg" class="form-control" value="<?=$query->kg?>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">使用明細</label>
+    <div class="col-sm-9">
+      <input type="text" name="detail" class="form-control" value="<?= $query->detail?>">
+    </div>
+  </div>
+  <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <input type="submit" class="btn btn-primary" value="送出">
     </div>

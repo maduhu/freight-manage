@@ -26,6 +26,8 @@
 			<td>入帳金額</td>
 			<td>使用金額</td>
 			<td>存金</td>
+			<td>kg</td>
+			<td>使用明細</td>
 			<td>編輯</td>	
 			<td>刪除</td>
 		</tr>
@@ -56,6 +58,8 @@
 				<td class="text-success"><?= number_format($value->save_money)?></td>	
 				<td class="text-info"><?= number_format($value->use_money)?></td>	
 				<td class="text-danger"><?= number_format($value->balance)?></td>
+				<td><?= $value->kg?></td>	
+				<td><?= $value->detail?></td>
 				<td><a href="<?= base_url('admin/money/edit/'.$value->money_id)?>" class="btn btn-warning">編輯</a></td>
 				<td><a href="javascript:if(confirm('確定要刪除嗎？'))location.href='<?= base_url('admin/money/delete/'.$value->money_id)?>'" class="btn btn-danger">刪除</a></td>
 			</tr>

@@ -40,6 +40,12 @@
 				</table>
 				<div class="text-center"><a href="<?=base_url('store/order/create_sub/'.$value->order_img_id)?>" class="btn btn-primary">+新增項目</a>	</div>
 				<div class="text-center"><h3>$ <?= number_format($price)?></h3></div>
+				<hr>
+				<div class="pull-right">
+					目前位置: <?= $value->position?> <a href="<?= base_url('store/order/position/'.$value->order_img_id)?>" class="btn btn-success">選擇位置</a>
+				</div>
+				<a href="<?= base_url('store/order/message/'.$value->order_img_id)?>" class="btn btn-warning">留言</a>
+				<div class="well"><?=$value->store_message?></div>
 			</div>			
 		</div>
 		<hr>
