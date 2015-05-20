@@ -2,6 +2,20 @@
 <section class="container text-center">
 	<form class="form-inline" method="post">
 		<div class="form-group">
+	    <label class="text-danger">狀態</label>
+	    <select name="sub_state" class="form-control">
+	    	<option value="買" <?php if ($query->sub_state == '買') {echo "selected";}?> >買</option>
+	    	<option value="訂" <?php if ($query->sub_state == '訂') {echo "selected";}?> >訂</option>
+	    	<option value="結束" <?php if ($query->sub_state == '結束') {echo "selected";}?> >結束</option>
+	    </select>
+	  </div>
+		<div class="form-group">
+	    <label class="text-danger">日期</label>
+	    <?php  date_default_timezone_set("Asia/Taipei") ?>
+	    <input type="date" name="sub_state_date" class="form-control" value="<?=($query->sub_state_date != '0000-00-00') ? $query->sub_state_date : date('Y-m-d')?>">
+	  </div>
+	  <br><br>
+		<div class="form-group">
 	    <label>顏色</label>
 	    <input type="text" name="color" class="form-control" value="<?=$query->color?>">
 	  </div>
@@ -17,6 +31,7 @@
 	    <label>單價</label>
 	    <input type="number" name="price" class="form-control" value="<?=$query->price?>">
 	  </div>
+	  <br><br>
 	  <button type="submit" class="btn btn-primary">送出</button>
 	</form>
 	<hr>

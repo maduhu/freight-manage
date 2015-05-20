@@ -25,6 +25,7 @@
 						<td>數量</td>
 						<td>金額</td>
 						<td>總金額</td>
+						<td>狀態</td>
 					<?php if ( $query[0]->state_id == 1): ?>
 						<td>編輯</td>
 						<td>刪除</td>
@@ -38,6 +39,7 @@
 							<td class="text-info"><?= $sub->amount?></td>
 							<td class="text-success"><?= number_format($sub->price)?></td>
 							<td class="text-danger"><?= number_format($sub->amount * $sub->price)?></td>	
+							<td class="text-danger"><?= $sub->sub_state?><? if ( $sub->sub_state == '訂') { echo ' '.$sub->sub_state_date; }?></td>
 						<?php if ( $query[0]->state_id == 1): ?>
 							<td><a href="<?= base_url('store/order/detail_edit_sub/'.$sub->order_sub_id.'/'.$query[0]->order_id)?>" class="btn btn-warning">編輯</a></td>
 							<td><a href="<?= base_url('store/order/detail_delete_sub/'.$sub->order_sub_id.'/'.$query[0]->order_id)?>" class="btn btn-danger">刪除</a></td>
@@ -62,7 +64,10 @@
 			<?php if ( $query[0]->state_id == 1): ?>
 				<a href="<?= base_url('store/order/detail_message/'.$value->order_img_id.'/'.$value->order_id)?>" class="btn btn-warning">留言</a>
 			<?php endif ?>
+				<p class="text-success" style="margin:0 20px;">你的留言</p>
 				<div class="well"><?=$value->store_message?></div>
+				<p class="text-danger" style="margin:0 20px;">管理員留言</p>
+				<div class="well"><?=$value->admin_message?></div>
 			</div>			
 		</div>
 		<hr>
@@ -70,6 +75,7 @@
 	<div class="row">
 		<div class="col-xs-4"></div>
 		<div class="col-xs-8"><h2 class="text-danger text-center">$ <?= number_format($price_total)?></h2></div>
+		<!-- <div class="col-xs-8"><h2 class="text-danger text-center"><?php echo $price_total.' (總金) + '.$price_total*0.06.' (手續) = $ '.($price_total+$price_total*0.06).' (實付)'?></h2></div> -->
 
 	</div>
 	<!-- <div class="text-center"><a href="javascript:if(confirm('確定要送出訂單了嗎？'))location.href='<?=base_url('store/order/submit')?>'" class="btn btn-primary btn-lg" <?php if(empty($query)){ echo "disabled";}?> >送出訂單</a></div> -->

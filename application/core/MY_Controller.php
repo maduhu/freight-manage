@@ -6,6 +6,26 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 	}
 
+	protected function check_admin()
+	{
+		if ( $this->session->userdata('ident') != 'admin') {
+			$this->session->sess_destroy();
+			redirect('admin');
+			return false;
+		}
+		return true;
+	}
+
+	protected function check_user()
+	{
+		if ( $this->session->userdata('ident') != 'user') {
+			$this->session->sess_destroy();
+			redirect('store');
+			return false;
+		}
+		return true;
+	}
+
 	protected function singleUploading() //單檔案上傳
 	{
 		$config["encrypt_name"] = TRUE;

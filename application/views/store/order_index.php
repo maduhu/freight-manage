@@ -35,7 +35,7 @@
 				<td><?= $value->user_name?></td>
 				<td><?= $value->order_id?></td>
 				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
-				<td class="text-success">$ <?= $value->total_price * 0.6?></td>
+				<td class="text-success">$ <?= $value->total_price * 0.06?></td>
 				<td><?= $value->state_name?></td>
 				<td><a href="<?= base_url('store/order/detail/'.$value->order_id)?>" class="btn btn-primary">詳細狀況</a></td>
 			</tr>

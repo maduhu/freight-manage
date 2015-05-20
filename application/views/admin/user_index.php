@@ -19,7 +19,7 @@
 	
 	<br>
 	<table class="table table-striped">
-		<tr class="warning">
+		<tr>
 			<td>公司名稱</td>
 			<td>姓名</td>
 			<td>電話</td>

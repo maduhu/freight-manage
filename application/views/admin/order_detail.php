@@ -2,6 +2,8 @@
 <script src="<?=base_url('assets/js/dropzone.js')?>"></script>
 <h2 class="text-center">訂單詳情</h2>
 <section class="container">
+<a href="javascript:window.print();" class="btn btn-success btn-lg hidden-print pull-right">列印訂單</a>
+<hr>
 <div class="row">
 	<div class="col-xs-2"></div>
 	<div class="col-xs-8">
@@ -37,7 +39,7 @@
 									# code...
 									break;
 							}?>
-							<a href="<?= base_url('admin/order/edit_state/'.$query[0]->order_id)?>" class="btn btn-warning">更改</a>
+							<a href="<?= base_url('admin/order/edit_state/'.$query[0]->order_id)?>" class="btn btn-warning hidden-print">更改</a>
 						</td>
 					</tr>	
 				</table>
@@ -63,6 +65,9 @@
 						<td>數量</td>
 						<td>金額</td>
 						<td>總金額</td>
+						<td>狀態</td>
+						<td class="hidden-print">編輯</td>
+						<td class="hidden-print">刪除</td>
 					</tr>
 					<?php $price = 0; ?>
 					<?php foreach ($value->order_subs as $sub): ?>
@@ -72,17 +77,21 @@
 							<td class="text-info"><?= $sub->amount?></td>
 							<td class="text-success"><?= number_format($sub->price)?></td>
 							<td class="text-danger"><?= number_format($sub->amount * $sub->price)?></td>	
+							<td class="text-danger"><?= $sub->sub_state?><? if ( $sub->sub_state == '訂') { echo ' '.$sub->sub_state_date; }?></td>
+							<td class="hidden-print"><a href="<?= base_url('admin/order/detail_edit_sub/'.$sub->order_sub_id.'/'.$query[0]->order_id)?>" class="btn btn-warning">編輯</a></td>
+							<td class="hidden-print"><a href="<?= base_url('admin/order/detail_delete_sub/'.$sub->order_sub_id.'/'.$query[0]->order_id)?>" class="btn btn-danger">刪除</a></td>
 						</tr>
 						<?php $price += $sub->amount * $sub->price ?>
 					<?php endforeach ?>
 					<?php $price_total += $price ?>
 				</table>
+				<div class="text-center hidden-print"><a href="<?=base_url('admin/order/detail_create_sub/'.$value->order_img_id.'/'.$query[0]->order_id)?>" class="btn btn-primary">+新增項目</a>	</div>
 				<div class="text-center"><h3>$ <?= number_format($price)?></h3></div>
 				<hr>
 				<h4 class="pull-right">位置：<?=$value->position?></h4><br>
 				<label for="" class="text-success" style="margin:0 20px;">客戶留言</label>
 				<div class="well"><?=$value->store_message?></div>
-				<label for="" class="text-danger" style="margin:0 20px;">管理員留言</label><a href="<?=base_url('admin/order/message/'.$sub->order_img_id.'/'.$value->order_id)?>" class="btn btn-warning">留言</a>
+				<label for="" class="text-danger" style="margin:0 20px;">管理員留言</label><a href="<?=base_url('admin/order/message/'.$sub->order_img_id.'/'.$value->order_id)?>" class="btn btn-warning hidden-print">留言</a>
 				<div class="well"><?=$value->admin_message?></div>
 			</div>			
 		</div>

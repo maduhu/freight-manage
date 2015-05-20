@@ -6,6 +6,10 @@ class User extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('user_model');
+		if ( ! $this->check_admin() ) {
+			return false;
+		}
+
 	}
 
 	public function index()

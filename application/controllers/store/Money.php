@@ -6,6 +6,9 @@ class Money extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('money_model');
+		if ( ! $this->check_user() ) {
+			return false;
+		}
 	}
 
 	public function index()

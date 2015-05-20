@@ -20,7 +20,7 @@
 	<br><br>
 
 	<table class="table table-striped">
-		<tr>
+		<tr class="warning">
 			<td>日期</td>
 			<td>公司</td>
 			<td>入帳金額</td>

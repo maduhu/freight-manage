@@ -35,6 +35,9 @@ class Welcome extends MY_Controller {
 
 	public function panel()
 	{
+		if ( ! $this->check_admin() ) {
+			return false;
+		}
 		$this->load->view('store_panel');
 		return true;
 	}

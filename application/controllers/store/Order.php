@@ -6,6 +6,9 @@ class Order extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model(['order_model', 'order_img_model', 'order_sub_model']);
+		if ( ! $this->check_user() ) {
+			return false;
+		}
 	}
 
 	public function muti($order_id = 0)

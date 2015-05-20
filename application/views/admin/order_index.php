@@ -15,10 +15,11 @@
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('store/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
+	<a href="<?=base_url('admin/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
+	<a href="<?=base_url('admin/order/all_unsend')?>" class="btn btn-warning pull-right" style="margin:0 20px;">查看所有未送</a>
 	<br><br>
 	<table class="table table-hover">
-		<tr class="success">
+		<tr class="info">
 			<td>時間</td>
 			<td>公司</td>
 			<td>聯絡人</td>
@@ -26,6 +27,7 @@
 			<td>金額</td>
 			<td>手續費</td>
 			<td>處理狀況</td>
+			<td>未送</td>
 			<td>詳細情況</td>
 			<td>刪除</td>
 		</tr>
@@ -36,10 +38,11 @@
 				<td><?= $value->user_name?></td>
 				<td><?= $value->order_id?></td>
 				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
-				<td class="text-success">$ <?= $value->total_price * 0.6?></td>
+				<td class="text-success">$ <?= $value->total_price * 0.06?></td>
 				<td><?= $value->state_name?></td>
+				<td style="color:red;"><?= ($value->unsend > 0) ? $value->unsend : ''?></td>
 				<td><a href="<?= base_url('admin/order/detail/'.$value->order_id)?>" class="btn btn-success">詳細狀況</a></td>
-				<td><a href="<?= base_url('admin/order/delete/'.$value->order_id)?>" class="btn btn-danger">刪除</a></td>	
+				<td><a href="javascript:if(confirm('確定要刪除此訂單？'))location.href='<?= base_url('admin/order/delete/'.$value->order_id)?>'" class="btn btn-danger">X</a></td>	
 			</tr>
 		<?php endforeach ?>
 	</table>

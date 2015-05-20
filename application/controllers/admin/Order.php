@@ -6,6 +6,10 @@ class Order extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model(['user_model', 'order_model', 'order_img_model', 'order_sub_model', 'state_model']);
+		if ( ! $this->check_admin() ) {
+			return false;
+		}
+
 	}
 
 	public function index()
@@ -14,14 +18,19 @@ class Order extends MY_Controller {
 		// 算出總價
 		foreach ($orders as $value) {
 			$total_price = 0;
+			$unsend = 0;
 			$query = $this->order_img_model->select_by_orderId($value->order_id);
 			foreach ($query as $value2) {
 				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
 				foreach ($sub as $value3) {
 					$total_price += $value3->amount * $value3->price;
+					if ($value3->sub_state == '訂') {
+						$unsend++;
+					}
 				}
 			}
 			$value->total_price = $total_price;
+			$value->unsend = $unsend;
 		}
 		$this->load->view('admin/order_index', array(
 			'orders' => $orders
@@ -95,10 +104,10 @@ class Order extends MY_Controller {
 	public function detail_edit_sub($order_sub_id = null, $order_id = null)
 	{
 		// 若處理了就無法編輯
-		if ( $this->order_model->select_data($order_id)->state_id > 1) {
-			redirect('admin/order/detail/'.$order_id);
-			return true;
-		}
+		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
+		// 	redirect('admin/order/detail/'.$order_id);
+		// 	return true;
+		// }
 
 		if ( ! $query = $this->order_sub_model->select_data($order_sub_id)) {
 			$this->load->view('failure', array(
@@ -123,10 +132,11 @@ class Order extends MY_Controller {
 	public function detail_delete_sub($order_sub_id = null, $order_id = null)
 	{
 		// 若處理了就無法編輯
-		if ( $this->order_model->select_data($order_id)->state_id > 1) {
-			redirect('admin/order/detail/'.$order_id);
-			return true;
-		}
+		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
+		// 	redirect('admin/order/detail/'.$order_id);
+		// 	return true;
+		// }
+
 		$this->order_sub_model->delete_data($order_sub_id);
 		redirect('admin/order/detail/'.$order_id);
 		return true;
@@ -135,10 +145,10 @@ class Order extends MY_Controller {
 	public function detail_create_sub($order_img_id = null, $order_id = null)
 	{
 		// 若處理了就無法編輯
-		if ( $this->order_model->select_data($order_id)->state_id > 1) {
-			redirect('admin/order/detail/'.$order_id);
-			return true;
-		}
+		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
+		// 	redirect('admin/order/detail/'.$order_id);
+		// 	return true;
+		// }
 
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
@@ -186,7 +196,7 @@ class Order extends MY_Controller {
 			redirect('admin/order');
 			return true;
 		}
-		$states = $this->state_model->select_all_data();
+		$states = $this->state_model->select_all_data('asc');
 		if ( ! $data = $this->input->post() ) {
 			$this->load->view('admin/order_state_edit', array(
 				'query' => $query,
@@ -199,5 +209,69 @@ class Order extends MY_Controller {
 		redirect('admin/order/detail/'.$order_id);
 		return true;
 	}
+
+	public function search()
+	{
+		$states = $this->order_model->select_all_state();
+		if ( ! $data = $this->input->post() ) {
+			$this->load->view('admin/order_search', array(
+				'states' => $states
+			));
+			return true;
+		}
+		$orders = $this->order_model->select_all_by_search($data);
+		// 算出總價
+		foreach ($orders as $value) {
+			$total_price = 0;
+			$unsend = 0;
+			$query = $this->order_img_model->select_by_orderId($value->order_id);
+			foreach ($query as $value2) {
+				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
+				foreach ($sub as $value3) {
+					$total_price += $value3->amount * $value3->price;
+					if ($value3->sub_state == '訂') {
+						$unsend++;
+					}
+				}
+			}
+			$value->total_price = $total_price;
+			$value->unsend = $unsend;
+		}
+		$this->load->view('admin/order_index', array(
+			'orders' => $orders,
+			'data' => $data
+		));
+		return true;
+	}
+
+	public function all_unsend()
+	{
+		$orders = $this->order_model->select_all();
+		// 算出總價
+		foreach ($orders as $key => $value) {
+			$total_price = 0;
+			$unsend = 0;
+			$query = $this->order_img_model->select_by_orderId($value->order_id);
+			foreach ($query as $value2) {
+				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
+				foreach ($sub as $value3) {
+					$total_price += $value3->amount * $value3->price;
+					if ($value3->sub_state == '訂') {
+						$unsend++;
+					}
+				}
+			}
+			// 刪除掉無未送的
+			if ($unsend < 1) {
+				unset($orders[$key]);
+			}
+			$value->total_price = $total_price;
+			$value->unsend = $unsend;
+		}
+		$this->load->view('admin/order_index', array(
+			'orders' => $orders
+		));
+		return true;
+	}	
 
 }

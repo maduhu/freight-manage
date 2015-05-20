@@ -18,9 +18,9 @@
   <script type="text/javascript" src="<?=base_url('assets/js/bootstrap.min.js')?>"></script>
 </head>
 <body>
-<h1 class="text-center">貨運系統</h1>
+<h1 class="text-center hidden-print">貨運系統</h1>
 <hr>
-<section class="container">
+<section class="container hidden-print">
   <?php if ($this->session->userdata('ident') === 'admin'): //管理員能看到的?>
     <div class="btn-group btn-group-justified btn-lg" role="group">
       <a href="<?= base_url('admin/user')?>" class="btn btn-lg btn-primary" role="button">會員管理</a>
