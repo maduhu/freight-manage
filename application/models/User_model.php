@@ -30,8 +30,9 @@ class User_model extends MY_Model {
 	{
 		$this->db->or_like('company', $keyword);
 		$this->db->or_like('user_name', $keyword);
+		$this->db->or_like('address', $keyword);
 		$this->db->or_like('email', $keyword);
-		$this->db->or_like('account', $keyword);
+		// $this->db->or_like('account', $keyword);
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}

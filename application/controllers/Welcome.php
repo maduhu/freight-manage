@@ -19,6 +19,8 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+		redirect('store');
+		return true;
 		$this->session->sess_destroy();
 		$this->load->view('welcome');
 	}
@@ -28,5 +30,10 @@ class Welcome extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect();
 		return true;
+	}
+
+	public function printd()
+	{
+		$this->load->view('print');
 	}
 }

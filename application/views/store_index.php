@@ -24,6 +24,6 @@
 		</form>
   </div>
 </div>
-
+<h2 class="text-center">手機請使用橫式登入</h2>
 </section>
 <?php require_once VIEWPATH.'_templates/_footer.php' ?>

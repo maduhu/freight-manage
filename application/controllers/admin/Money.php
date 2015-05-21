@@ -20,13 +20,14 @@ class Money extends MY_Controller {
 		return true;
 	}
 
-	public function create()
+	public function create($user_id = null)
 	{
 		$this->load->model('user_model');
 		$users = $this->user_model->select_all_data();
 		if ( ! $this->input->post() ) {
 			$this->load->view('admin/money_create', array(
-				'users' => $users
+				'users' => $users,
+				'user_id' => $user_id
 			));
 			return true;
 		}
@@ -39,6 +40,20 @@ class Money extends MY_Controller {
 		$this->load->view('success', array(
 			'message' => '新增成功',
 			'redirectUrl' => 'admin/money'
+		));
+		return true;
+	}
+
+	public function create_search()
+	{
+		if ( ! $query = $this->input->post() ) {
+			$this->load->view('admin/money_create_search');
+			return true;
+		}
+		$keyword = $query['keyword'];
+		$query = $this->user_model->search($keyword);
+		$this->load->view('admin/money_create_search', array(
+			'query' => $query
 		));
 		return true;
 	}

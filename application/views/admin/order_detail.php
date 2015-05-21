@@ -1,14 +1,20 @@
 <?php require_once VIEWPATH.'_templates/_header.php' ?>
+<style type="text/css" media="print">
+  div.page {
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+</style>
 <script src="<?=base_url('assets/js/dropzone.js')?>"></script>
-<h2 class="text-center">訂單詳情</h2>
+<h2 class="text-center hidden-print">訂單詳情</h2>
 <section class="container">
 <a href="javascript:window.print();" class="btn btn-success btn-lg hidden-print pull-right">列印訂單</a>
-<hr>
-<div class="row">
+<hr class="hidden-print">
+	<div class="row">
 	<div class="col-xs-2"></div>
 	<div class="col-xs-8">
 		<div class="panel panel-primary">
-		  <div class="panel-heading">訂單狀況</div>
+		  <div class="panel-heading hidden-print">訂單狀況</div>
 		  <table class="table table-striped text-center">
 					<tr>
 						<td>單號</td>
@@ -48,13 +54,15 @@
 	</div>
 	<div class="col-xs-2"></div>
 </div>
-<hr>
-
-
+</section>
+<section class="container hidden-print">
 	<?php $price_total = 0;?>
 	<?php foreach ($query as $key => $value): ?>
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-xs-1">
+				<h3><?=$key+1;?></h3>
+			</div>
+			<div class="col-xs-3">
 				<img src="<?= base_url($value->image)?>" class="img-responsive">
 			</div>
 			<div class="col-xs-8">
@@ -103,5 +111,74 @@
 	</div>
 	<!-- <div class="text-center"><a href="javascript:if(confirm('確定要送出訂單了嗎？'))location.href='<?=base_url('admin/order/submit')?>'" class="btn btn-primary btn-lg" <?php if(empty($query)){ echo "disabled";}?> >送出訂單</a></div> -->
 </section>
+
+<section class="container" style="font-size:1px;">
+	<?php $price_total = 0;?>
+	<?php $count_page = 1;?>
+<div class="row page">
+	<?php foreach ($query as $key => $value): ?>
+		<div class="col-xs-6">
+			<div class="col-xs-1" style="padding:0;">
+				<p><?=$key+1?></p>
+			</div>
+			<div class="col-xs-3" style="padding:0;">
+				<img src="<?= base_url($value->image)?>" class="img-responsive">
+			</div>
+			<div class="col-xs-8" style="padding:0;">
+				<table class="table table-hover" style="margin:0;">
+					<tr class="success">
+						<td>顏</td>	
+						<td>尺</td>
+						<td>數</td>
+						<td>金</td>
+						<td>總</td>
+						<td>狀</td>
+					</tr>
+					<?php $price = 0; ?>
+					<?php foreach ($value->order_subs as $sub): ?>
+						<tr>
+							<td><?= $sub->color?></td>
+							<td><?= $sub->size?></td>
+							<td class="text-info"><?= $sub->amount?></td>
+							<td class="text-success"><?= number_format($sub->price)?></td>
+							<td class="text-danger"><?= number_format($sub->amount * $sub->price)?></td>	
+							<td class="text-danger"><?= $sub->sub_state?><? if ( $sub->sub_state == '訂') { echo ' '.$sub->sub_state_date; }?></td>
+						</tr>
+						<?php $price += $sub->amount * $sub->price ?>
+					<?php endforeach ?>
+					<?php $price_total += $price ?>
+				</table>
+				<p class="pull-right">目前位置: <?= $value->position?></p>
+				<div class="text-center"><p style="margin:1;">$ <?= number_format($price)?></p></div>
+				<hr style="margin:0;">
+				<div class="col-xs-6">
+					<p class="text-success" style="margin:0;padding:0;">你</p>
+					<div class="well" style="margin:0;padding:0;"><?=$value->store_message?></div>					
+				</div>
+				<div class="col-xs-6">
+					<p class="text-danger" style="margin:0;padding:0;">管</p>
+					<div class="well" style="margin:0;padding:0;"><?=$value->admin_message?></div>				
+				</div>
+			</div>			
+		</div>
+		<?php if ($key%2 == 1): ?>
+			<div class="row"><div class="clear-fix"></div></div>
+		<?php endif ?>
+		<?php if ($key%10 == 9): ?>
+			<?php $count_page++ ?>
+			<?php if (count($query)/10 > $count_page): ?>
+				</div>
+				<div class="row page">				
+			<?php endif ?>
+		<?php endif ?>
+	<?php endforeach ?>
+	<div class="row">
+		<div class="col-xs-4"></div>
+		<div class="col-xs-8"><h2 class="text-danger text-center">$ <?= number_format($price_total)?></h2></div>
+	</div>
+</div>
+	
+</section>
+
 <br><br>
 <?php require_once VIEWPATH.'_templates/_footer.php' ?>
