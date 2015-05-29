@@ -5,10 +5,13 @@
 <div class="col-xs-4">
 <form action="" method="post">
 	<select name="position" class="form-control">
-		<option value="A">A</option>
-		<option value="B">B</option>
-		<option value="C">C</option>
+		<option value="A" <?if ($query->position == 'A') {echo 'selected';} ?> >A</option>
+		<option value="B" <?if ($query->position == 'B') {echo 'selected';} ?> >B</option>
+		<option value="C" <?if ($query->position == 'C') {echo 'selected';} ?> >C</option>
 	</select>
+	<br>
+	<label for="">位置描述</label>
+	<input type="text" name="position_desc" class="form-control" placeholder="例如 2F-2" value="<?=$query->position_desc?>">
 	<br>
 	<div class="text-center">
 		<button type="submit" class="btn btn-primary">送出</button>

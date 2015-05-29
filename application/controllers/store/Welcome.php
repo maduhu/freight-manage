@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class Welcome extends MY_Controller {
 

@@ -16,7 +16,7 @@
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('admin/money/search')?>" class="btn btn-primary pull-right">搜尋</a>	
+	<a href="<?=base_url('korea/money/search')?>" class="btn btn-primary pull-right">搜尋</a>	
 	<br><br>
 
 	<table class="table table-striped">
@@ -60,8 +60,8 @@
 				<td class="text-danger"><?= number_format($value->balance)?></td>
 				<td><?= $value->kg?></td>	
 				<td><?= $value->detail?></td>
-				<td><a href="<?= base_url('admin/money/edit/'.$value->money_id)?>" class="btn btn-warning">編輯</a></td>
-				<td><a href="javascript:if(confirm('確定要刪除嗎？'))location.href='<?= base_url('admin/money/delete/'.$value->money_id)?>'" class="btn btn-danger">刪除</a></td>
+				<td><a href="<?= base_url('korea/money/edit/'.$value->money_id)?>" class="btn btn-warning">編輯</a></td>
+				<td><a href="javascript:if(confirm('確定要刪除嗎？'))location.href='<?= base_url('korea/money/delete/'.$value->money_id)?>'" class="btn btn-danger">刪除</a></td>
 			</tr>
 		<?php endforeach ?>
 	</table>

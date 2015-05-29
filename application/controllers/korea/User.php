@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class User extends MY_Controller {
 
@@ -6,7 +9,7 @@ class User extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('user_model');
-		if ( ! $this->check_admin() ) {
+		if ( ! $this->check_korea() ) {
 			return false;
 		}
 
@@ -15,7 +18,7 @@ class User extends MY_Controller {
 	public function index()
 	{
 		$users = $this->user_model->select_all_data();
-		$this->load->view('admin/user_index', array(
+		$this->load->view('korea/user_index', array(
 			'users' => $users
 		));
 		return true;
@@ -24,7 +27,7 @@ class User extends MY_Controller {
 	public function create()
 	{
 		if ( ! $this->input->post() ) {
-			$this->load->view('admin/user_create');
+			$this->load->view('korea/user_create');
 			return true;
 		}
 		$account = $this->input->post('account');
@@ -38,7 +41,7 @@ class User extends MY_Controller {
 		if ( $this->user_model->insert_data($data) ) {
 			$this->load->view('success', array(
 				'message' => '新增成功',
-				'redirectUrl' => 'admin/user'
+				'redirectUrl' => 'korea/user'
 			));
 			return true;
 		}
@@ -57,7 +60,7 @@ class User extends MY_Controller {
 			return false;
 		}
 		if ( ! $this->input->post() ) {
-			$this->load->view('admin/user_edit', array(
+			$this->load->view('korea/user_edit', array(
 				'query' => $query
 			));
 			return true;
@@ -67,7 +70,7 @@ class User extends MY_Controller {
 		$this->user_model->update_data($data);
 		$this->load->view('success', array(
 			'message' => '更新成功',
-			'redirectUrl' => 'admin/user'
+			'redirectUrl' => 'korea/user'
 		));
 		return true;
 	}
@@ -83,7 +86,7 @@ class User extends MY_Controller {
 		$this->user_model->delete_data($user_id);
 		$this->load->view('success', array(
 			'message' => '刪除成功',
-			'redirectUrl' => 'admin/user'
+			'redirectUrl' => 'korea/user'
 		));
 		return true;
 	}
@@ -92,11 +95,11 @@ class User extends MY_Controller {
 	{
 		$keyword = $this->input->post('keyword', true);
 		if ($keyword == '') {
-			redirect('admin/user');
+			redirect('korea/user');
 			return true;
 		}
 		$users = $this->user_model->search($keyword);
-		$this->load->view('admin/user_index', array(
+		$this->load->view('korea/user_index', array(
 			'users' => $users,
 			'keyword' => $keyword
 		));

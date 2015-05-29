@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: localhost
--- 產生時間： 2015 年 05 月 20 日 05:26
+-- 產生時間： 2015 年 05 月 29 日 18:29
 -- 伺服器版本: 5.6.20
 -- PHP 版本： 5.5.15
 
@@ -23,21 +23,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `admin`
+-- 資料表結構 `korea`
 --
 
-CREATE TABLE IF NOT EXISTS `admin` (
+CREATE TABLE IF NOT EXISTS `korea` (
 `id` int(11) NOT NULL,
   `account` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- 資料表的匯出資料 `admin`
+-- 資料表的匯出資料 `korea`
 --
 
-INSERT INTO `admin` (`id`, `account`, `password`) VALUES
-(1, 'admin', '123456789');
+INSERT INTO `korea` (`id`, `account`, `password`) VALUES
+(1, 'david', 'davidlin978'),
+(2, 'korea2tw', 'koreatw888');
 
 -- --------------------------------------------------------
 
@@ -65,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
 `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL COMMENT 'users''sPK',
   `state_id` int(11) NOT NULL DEFAULT '1',
+  `cross` int(11) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -81,8 +83,9 @@ CREATE TABLE IF NOT EXISTS `order_imgs` (
   `order_id` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL,
+  `position_desc` varchar(255) NOT NULL,
   `store_message` text NOT NULL,
-  `admin_message` text NOT NULL
+  `korea_message` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -145,9 +148,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 --
--- 資料表索引 `admin`
+-- 資料表索引 `korea`
 --
-ALTER TABLE `admin`
+ALTER TABLE `korea`
  ADD PRIMARY KEY (`id`);
 
 --
@@ -191,10 +194,10 @@ ALTER TABLE `users`
 --
 
 --
--- 使用資料表 AUTO_INCREMENT `admin`
+-- 使用資料表 AUTO_INCREMENT `korea`
 --
-ALTER TABLE `admin`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+ALTER TABLE `korea`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- 使用資料表 AUTO_INCREMENT `moneys`
 --

@@ -1,5 +1,16 @@
 <?php require_once VIEWPATH.'_templates/_header.php' ?>
 <script src="<?=base_url('assets/js/dropzone.js')?>"></script>
+<script>
+	function submit_check() {
+		if (confirm('確定要送出訂單了嗎？')) {
+			if ( $("#cross").prop("checked") ) {
+				location.href='<?=base_url('store/order/submit/1')?>';
+			} else {
+				location.href='<?=base_url('store/order/submit')?>'
+			};
+		};
+	}
+</script>
 <section class="container">
 	<div class="dropz well text-center" style="border:2px dashed;">
 		<p>多圖片拖曳上傳</p>
@@ -7,7 +18,7 @@
 	</div>
 	<?php $price_total = 0;?>
 	<?php foreach ($query as $key => $value): ?>
-		<div class="row">
+		<div class="row" id="<?=$value->order_img_id?>">
 			<div class="col-xs-4">
 				<img src="<?= base_url($value->image)?>" class="img-responsive">
 			</div>
@@ -42,7 +53,7 @@
 				<div class="text-center"><h3>$ <?= number_format($price)?></h3></div>
 				<hr>
 				<div class="pull-right">
-					目前位置: <?= $value->position?> <a href="<?= base_url('store/order/position/'.$value->order_img_id)?>" class="btn btn-success">選擇位置</a>
+					目前位置: <?= $value->position?> - <?=$value->position_desc?> <a href="<?= base_url('store/order/position/'.$value->order_img_id)?>" class="btn btn-success">選擇位置</a>
 				</div>
 				<a href="<?= base_url('store/order/message/'.$value->order_img_id)?>" class="btn btn-warning">留言</a>
 				<div class="well"><?=$value->store_message?></div>
@@ -54,7 +65,13 @@
 		<div class="col-xs-4"></div>
 		<div class="col-xs-8"><h2 class="text-danger text-center">$ <?= number_format($price_total)?></h2></div>
 	</div>
-	<div class="text-center"><a href="javascript:if(confirm('確定要送出訂單了嗎？'))location.href='<?=base_url('store/order/submit')?>'" class="btn btn-primary btn-lg" <?php if(empty($query)){ echo "disabled";}?> >送出訂單</a></div>
+	<div class="checkbox text-center">
+	  <label>
+	    <input type="checkbox" value="" id="cross">
+	    要跨號集單
+	  </label>
+	</div>
+	<div class="text-center"><a href="javascript:submit_check()" class="btn btn-primary btn-lg" <?php if(empty($query)){ echo "disabled";}?> >送出訂單</a></div>
 </section>
 <script>
   $(".dropz").dropzone({

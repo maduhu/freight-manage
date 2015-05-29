@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class Money extends MY_Controller {
 

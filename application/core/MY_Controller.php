@@ -6,11 +6,11 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 	}
 
-	protected function check_admin()
+	protected function check_korea()
 	{
-		if ( $this->session->userdata('ident') != 'admin') {
+		if ( $this->session->userdata('ident') != 'korea') {
 			$this->session->sess_destroy();
-			redirect('admin');
+			redirect('korea');
 			return false;
 		}
 		return true;

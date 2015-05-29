@@ -1,11 +1,14 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class Order extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(['order_model', 'order_img_model', 'order_sub_model']);
+		$this->load->model(['order_model', 'order_img_model', 'order_sub_model', 'user_model']);
 		if ( ! $this->check_user() ) {
 			return false;
 		}
@@ -34,7 +37,9 @@ class Order extends MY_Controller {
 			foreach ($query as $value2) {
 				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
 				foreach ($sub as $value3) {
-					$total_price += $value3->amount * $value3->price;
+					if ($value3->sub_state != '結束') {
+						$total_price += $value3->amount * $value3->price;
+					}	
 				}
 			}
 			$value->total_price = $total_price;
@@ -65,7 +70,13 @@ class Order extends MY_Controller {
 			));
 			return false;
 		}
-
+		// 判斷項目有沒有大於 3 個，就是不能超過 4個
+		if (count($this->order_sub_model->select_by_orderImgId($order_img_id)) > 3) {
+			$this->load->view('failure', array(
+				'message' => '一個圖片最多只能 4 個項目'
+			));
+			return true;
+		}
 		if ( ! $data = $this->input->post() ) {
 			$this->load->view('store/order_create_sub', array(
 				'query' => $query
@@ -81,7 +92,7 @@ class Order extends MY_Controller {
 		// 	));
 		// 	return true;
 		// }
-		redirect('store/order/create');
+		redirect('store/order/create#'.$order_img_id);
 		return true;
 	}
 
@@ -129,7 +140,7 @@ class Order extends MY_Controller {
 		return true;
 	}
 
-	public function submit()
+	public function submit($cross = 0) // $cross 是判斷說要不要跨好集單
 	{
 		// 空的不給送單
 		if ( empty($query = $this->order_img_model->select_by_userId($this->session->userdata('user_id')))) {
@@ -164,6 +175,7 @@ class Order extends MY_Controller {
 		date_default_timezone_set("Asia/Taipei");
 		$data = array(
 			'user_id' => $this->session->userdata('user_id'),
+			'cross' => (int)$cross,
 			'create_time' => date('Y-m-d h:i:s'),
 			'update_time' => date('Y-m-d h:i:s')
 		);
@@ -220,8 +232,11 @@ class Order extends MY_Controller {
 		foreach ($query as $key => $value) {
 			$value->order_subs = $this->order_sub_model->select_by_orderImgId($value->order_img_id);
 		}
+		$user_detail = $this->user_model->select_data($this->session->userdata('user_id'));
+		$title = '訂單編號：'.$order_id.'  公司：'.$user_detail->company;
 		$this->load->view('store/order_detail', array(
-			'query' => $query
+			'query' => $query,
+			'title' => $title
 		));
 		return true;	
 	}
@@ -301,6 +316,13 @@ class Order extends MY_Controller {
 			));
 			return false;
 		}
+		// 判斷項目有沒有大於 3 個，就是不能超過 4個
+		if (count($this->order_sub_model->select_by_orderImgId($order_img_id)) > 3) {
+			$this->load->view('failure', array(
+				'message' => '一個圖片最多只能 4 個項目'
+			));
+			return true;
+		}
 
 		if ( ! $data = $this->input->post() ) {
 			$this->load->view('store/order_create_sub', array(
@@ -311,7 +333,7 @@ class Order extends MY_Controller {
 
 		$data['order_img_id'] = $order_img_id;
 		$this->order_sub_model->insert_data($data);
-		redirect('store/order/detail/'.$order_id);
+		redirect('store/order/detail/'.$order_id.'#'.$order_img_id);
 		return true;
 	}	
 
@@ -332,7 +354,7 @@ class Order extends MY_Controller {
 
 		$data['order_img_id'] = $order_img_id;
 		$this->order_img_model->update_data($data);
-		redirect('store/order/create');
+		redirect('store/order/create#'.$order_img_id);
 		return true;
 	}
 
@@ -353,7 +375,7 @@ class Order extends MY_Controller {
 
 		$data['order_img_id'] = $order_img_id;
 		$this->order_img_model->update_data($data);
-		redirect('store/order/detail/'.$order_id);
+		redirect('store/order/detail/'.$order_id.'#'.$order_img_id);
 		return true;
 	}
 
@@ -367,13 +389,13 @@ class Order extends MY_Controller {
 		}
 		if ( ! $data = $this->input->post() ) {
 			$this->load->view('store/order_position', array(
-				'position' => $query->store_message
+				'query' => $query
 			));
 			return true;
 		}
 		$data['order_img_id'] = $order_img_id;
 		$this->order_img_model->update_data($data);
-		redirect('store/order/create');
+		redirect('store/order/create#'.$order_img_id);
 		return true;
 	}
 
@@ -387,13 +409,13 @@ class Order extends MY_Controller {
 		}
 		if ( ! $data = $this->input->post() ) {
 			$this->load->view('store/order_position', array(
-				'position' => $query->store_message
+				'query' => $query
 			));
 			return true;
 		}
 		$data['order_img_id'] = $order_img_id;
 		$this->order_img_model->update_data($data);
-		redirect('store/order/detail/'.$order_id);
+		redirect('store/order/detail/'.$order_id.'#'.$order_img_id);
 		return true;
 	}
 

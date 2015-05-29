@@ -18,7 +18,7 @@
       	<?php endforeach ?>
       </select>
     </div>
-    <a href="<?=base_url('admin/money/create_search')?>" class="btn btn-warning">搜尋公司</a>
+    <a href="<?=base_url('korea/money/create_search')?>" class="btn btn-warning">搜尋公司</a>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">存入金額</label>

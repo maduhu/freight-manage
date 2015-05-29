@@ -15,8 +15,8 @@
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('admin/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
-	<a href="<?=base_url('admin/order/all_unsend')?>" class="btn btn-warning pull-right" style="margin:0 20px;">查看所有未送</a>
+	<a href="<?=base_url('korea/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
+	<a href="<?=base_url('korea/order/all_unsend')?>" class="btn btn-warning pull-right" style="margin:0 20px;">查看所有未送</a>
 	<br><br>
 	<table class="table table-hover">
 		<tr class="info">
@@ -28,6 +28,7 @@
 			<td>手續費</td>
 			<td>處理狀況</td>
 			<td>未送</td>
+			<td>跨號集單</td>
 			<td>詳細情況</td>
 			<td>刪除</td>
 		</tr>
@@ -38,11 +39,25 @@
 				<td><?= $value->user_name?></td>
 				<td><?= $value->order_id?></td>
 				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
-				<td class="text-success">$ <?= $value->total_price * 0.06?></td>
+				<?php if ($value->total_price > 100000000): ?>
+					<?php $fee = $value->total_price * 0.06 ?>
+				<?php endif ?>
+				<?php if ($value->total_price <= 100000000 && $value->total_price > 5000000): ?>
+					<?php $fee = $value->total_price * 0.07 ?>
+				<?php endif ?>
+				<?php if ($value->total_price <= 5000000): ?>
+					<?php $fee = $value->total_price * 0.08 ?>
+				<?php endif ?>
+				<td class="text-success">$ <?= number_format($fee)?></td>
 				<td><?= $value->state_name?></td>
 				<td style="color:red;"><?= ($value->unsend > 0) ? $value->unsend : ''?></td>
-				<td><a href="<?= base_url('admin/order/detail/'.$value->order_id)?>" class="btn btn-success">詳細狀況</a></td>
-				<td><a href="javascript:if(confirm('確定要刪除此訂單？'))location.href='<?= base_url('admin/order/delete/'.$value->order_id)?>'" class="btn btn-danger">X</a></td>	
+				<td>
+					<?php if ($value->cross): ?>
+						<span class="glyphicon glyphicon-ok"></span>
+					<?php endif ?>
+				</td>	
+				<td><a href="<?= base_url('korea/order/detail/'.$value->order_id)?>" class="btn btn-success">詳細狀況</a></td>
+				<td><a href="javascript:if(confirm('確定要刪除此訂單？'))location.href='<?= base_url('korea/order/delete/'.$value->order_id)?>'" class="btn btn-danger">X</a></td>	
 			</tr>
 		<?php endforeach ?>
 	</table>

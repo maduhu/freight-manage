@@ -25,7 +25,7 @@
 			<td><?= $value->user_name?></td>
 			<td><?= $value->address?></td>
 			<td><?= $value->email?></td>
-			<td><a href="<?=base_url('admin/money/create/'.$value->user_id)?>" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> </a></td>
+			<td><a href="<?=base_url('korea/money/create/'.$value->user_id)?>" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> </a></td>
 		</tr>	
 	<?php endforeach ?>
 </table>	

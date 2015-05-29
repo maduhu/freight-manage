@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class Money extends MY_Controller {
 
@@ -6,7 +9,7 @@ class Money extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model(array('money_model', 'user_model'));
-		if ( ! $this->check_admin() ) {
+		if ( ! $this->check_korea() ) {
 			return false;
 		}
 	}
@@ -14,7 +17,7 @@ class Money extends MY_Controller {
 	public function index()
 	{
 		$moneys = $this->money_model->select_all_data();
-		$this->load->view('admin/money_index', array(
+		$this->load->view('korea/money_index', array(
 			'moneys' => $moneys,
 		));
 		return true;
@@ -25,7 +28,7 @@ class Money extends MY_Controller {
 		$this->load->model('user_model');
 		$users = $this->user_model->select_all_data();
 		if ( ! $this->input->post() ) {
-			$this->load->view('admin/money_create', array(
+			$this->load->view('korea/money_create', array(
 				'users' => $users,
 				'user_id' => $user_id
 			));
@@ -39,7 +42,7 @@ class Money extends MY_Controller {
 		}
 		$this->load->view('success', array(
 			'message' => '新增成功',
-			'redirectUrl' => 'admin/money'
+			'redirectUrl' => 'korea/money'
 		));
 		return true;
 	}
@@ -47,12 +50,12 @@ class Money extends MY_Controller {
 	public function create_search()
 	{
 		if ( ! $query = $this->input->post() ) {
-			$this->load->view('admin/money_create_search');
+			$this->load->view('korea/money_create_search');
 			return true;
 		}
 		$keyword = $query['keyword'];
 		$query = $this->user_model->search($keyword);
-		$this->load->view('admin/money_create_search', array(
+		$this->load->view('korea/money_create_search', array(
 			'query' => $query
 		));
 		return true;
@@ -68,7 +71,7 @@ class Money extends MY_Controller {
 		}
 		if ( ! $data = $this->input->post() ) {
 			$users = $this->user_model->select_all_data();
-			$this->load->view('admin/money_edit', array(
+			$this->load->view('korea/money_edit', array(
 				'query' => $query,
 				'users' => $users
 			));
@@ -78,7 +81,7 @@ class Money extends MY_Controller {
 		$this->money_model->update_data($data);
 		$this->load->view('success', array(
 			'message' => '更新成功',
-			'redirectUrl' => 'admin/money'
+			'redirectUrl' => 'korea/money'
 		));
 		return true;
 	}
@@ -94,7 +97,7 @@ class Money extends MY_Controller {
 		$this->money_model->delete_data($money_id);
 		$this->load->view('success', array(
 			'message' => '刪除成功',
-			'redirectUrl' => 'admin/money'
+			'redirectUrl' => 'korea/money'
 		));
 		return true;
 	}
@@ -103,7 +106,7 @@ class Money extends MY_Controller {
 	{
 		if ( ! $data = $this->input->post() ) {
 			$users = $this->user_model->select_all_data();
-			$this->load->view('admin/money_search', array(
+			$this->load->view('korea/money_search', array(
 				'users' => $users
 			));
 			return true;
@@ -112,7 +115,7 @@ class Money extends MY_Controller {
 			$data['company_name'] = $this->user_model->select_data($data['company'])->company;
 		}
 		$moneys = $this->money_model->search($data);
-		$this->load->view('admin/money_index', array(
+		$this->load->view('korea/money_index', array(
 			'moneys' => $moneys,
 			'data' => $data
 		));

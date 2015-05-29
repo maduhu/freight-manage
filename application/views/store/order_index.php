@@ -26,6 +26,7 @@
 			<td>金額</td>
 			<td>手續費</td>
 			<td>處理狀況</td>
+			<td>跨號集單</td>
 			<td>詳細情況</td>
 		</tr>
 		<?php foreach ($orders as $key => $value): ?>
@@ -35,8 +36,22 @@
 				<td><?= $value->user_name?></td>
 				<td><?= $value->order_id?></td>
 				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
-				<td class="text-success">$ <?= $value->total_price * 0.06?></td>
+				<?php if ($value->total_price > 100000000): ?>
+					<?php $fee = $value->total_price * 0.06 ?>
+				<?php endif ?>
+				<?php if ($value->total_price <= 100000000 && $value->total_price > 5000000): ?>
+					<?php $fee = $value->total_price * 0.07 ?>
+				<?php endif ?>
+				<?php if ($value->total_price <= 5000000): ?>
+					<?php $fee = $value->total_price * 0.08 ?>
+				<?php endif ?>
+				<td class="text-success">$ <?= number_format($fee)?></td>
 				<td><?= $value->state_name?></td>
+				<td>
+					<?php if ($value->cross): ?>
+						<span class="glyphicon glyphicon-ok"></span>
+					<?php endif ?>
+				</td>	
 				<td><a href="<?= base_url('store/order/detail/'.$value->order_id)?>" class="btn btn-primary">詳細狀況</a></td>
 			</tr>
 		<?php endforeach ?>

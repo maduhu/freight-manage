@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Piece Chao <piece601@hotmail.com>
+ */
 
 class Order extends MY_Controller {
 
@@ -6,7 +9,7 @@ class Order extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model(['user_model', 'order_model', 'order_img_model', 'order_sub_model', 'state_model']);
-		if ( ! $this->check_admin() ) {
+		if ( ! $this->check_korea() ) {
 			return false;
 		}
 
@@ -23,7 +26,9 @@ class Order extends MY_Controller {
 			foreach ($query as $value2) {
 				$sub = $this->order_sub_model->select_by_orderImgId($value2->order_img_id);
 				foreach ($sub as $value3) {
-					$total_price += $value3->amount * $value3->price;
+					if ($value3->sub_state != '結束') {
+						$total_price += $value3->amount * $value3->price;
+					}	
 					if ($value3->sub_state == '訂') {
 						$unsend++;
 					}
@@ -32,7 +37,7 @@ class Order extends MY_Controller {
 			$value->total_price = $total_price;
 			$value->unsend = $unsend;
 		}
-		$this->load->view('admin/order_index', array(
+		$this->load->view('korea/order_index', array(
 			'orders' => $orders
 		));
 		return true;
@@ -56,7 +61,7 @@ class Order extends MY_Controller {
 		$this->order_model->delete_data($order_id);
 		$this->load->view('success', array(
 			'message' => '刪除成功',
-			'redirectUrl' => 'admin/order'
+			'redirectUrl' => 'korea/order'
 		));
 		return true;
 	}
@@ -66,16 +71,18 @@ class Order extends MY_Controller {
 		// 若連一個子訂單都沒有就自動刪除掉
 		if ( ! $query = $this->order_img_model->select_by_orderId($order_id) ) {
 			$this->order_model->delete_data($order_id);
-			redirect('admin/order');
+			redirect('korea/order');
 			return true;
 		}
 		foreach ($query as $key => $value) {
 			$value->order_subs = $this->order_sub_model->select_by_orderImgId($value->order_img_id);
 		}
 		$user_detail = $this->user_model->select_data($this->order_img_model->select_by_orderId($query[0]->order_id)[0]->user_id);
-		$this->load->view('admin/order_detail', array(
+		$title = '訂單編號：'.$order_id.'  公司：'.$user_detail->company;
+		$this->load->view('korea/order_detail', array(
 			'query' => $query,
-			'user_detail' => $user_detail
+			'user_detail' => $user_detail,
+			'title' => $title
 		));
 		return true;	
 	}
@@ -84,7 +91,7 @@ class Order extends MY_Controller {
 	{
 		// 若處理了就無法編輯
 		if ( $this->order_model->select_data($order_id)->state_id > 1) {
-			redirect('admin/order/detail/'.$order_id);
+			redirect('korea/order/detail/'.$order_id);
 			return true;
 		}
 
@@ -97,7 +104,7 @@ class Order extends MY_Controller {
 		@unlink($query->image);
 		$this->order_sub_model->delete_by_orderImgId($order_img_id);
 		$this->order_img_model->delete_data($order_img_id);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id);
 		return true;
 	}
 
@@ -105,7 +112,7 @@ class Order extends MY_Controller {
 	{
 		// 若處理了就無法編輯
 		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
-		// 	redirect('admin/order/detail/'.$order_id);
+		// 	redirect('korea/order/detail/'.$order_id);
 		// 	return true;
 		// }
 
@@ -117,7 +124,7 @@ class Order extends MY_Controller {
 		}
 		$image = $this->order_img_model->select_data($query->order_img_id)->image;
 		if ( ! $data = $this->input->post() ) {
-			$this->load->view('admin/order_edit_sub', array(
+			$this->load->view('korea/order_edit_sub', array(
 				'query' => $query,
 				'image' => $image
 			));
@@ -125,7 +132,7 @@ class Order extends MY_Controller {
 		}
 		$data['order_sub_id'] = $order_sub_id;
 		$this->order_sub_model->update_data($data);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id);
 		return true;
 	}
 
@@ -133,12 +140,12 @@ class Order extends MY_Controller {
 	{
 		// 若處理了就無法編輯
 		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
-		// 	redirect('admin/order/detail/'.$order_id);
+		// 	redirect('korea/order/detail/'.$order_id);
 		// 	return true;
 		// }
 
 		$this->order_sub_model->delete_data($order_sub_id);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id);
 		return true;
 	}
 
@@ -146,7 +153,7 @@ class Order extends MY_Controller {
 	{
 		// 若處理了就無法編輯
 		// if ( $this->order_model->select_data($order_id)->state_id > 1) {
-		// 	redirect('admin/order/detail/'.$order_id);
+		// 	redirect('korea/order/detail/'.$order_id);
 		// 	return true;
 		// }
 
@@ -157,8 +164,17 @@ class Order extends MY_Controller {
 			return false;
 		}
 
+		// 判斷項目有沒有大於 3 個，就是不能超過 4個
+		if (count($this->order_sub_model->select_by_orderImgId($order_img_id)) > 3) {
+			$this->load->view('failure', array(
+				'message' => '一個圖片最多只能 4 個項目'
+			));
+			return true;
+		}
+
+
 		if ( ! $data = $this->input->post() ) {
-			$this->load->view('admin/order_create_sub', array(
+			$this->load->view('korea/order_create_sub', array(
 				'query' => $query
 			));
 			return true;
@@ -166,7 +182,7 @@ class Order extends MY_Controller {
 
 		$data['order_img_id'] = $order_img_id;
 		$this->order_sub_model->insert_data($data);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id.'#'.$order_img_id);
 		return true;
 	}
 
@@ -179,26 +195,26 @@ class Order extends MY_Controller {
 			return true;
 		}
 		if ( ! $data = $this->input->post() ) {
-			$this->load->view('admin/order_message', array(
-				'admin_message' => $query->admin_message
+			$this->load->view('korea/order_message', array(
+				'korea_message' => $query->korea_message
 			));
 			return true;
 		}
 		$data['order_img_id'] = $order_img_id;
 		$this->order_img_model->update_data($data);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id.'#'.$order_img_id);
 		return true;
 	}
 
 	public function edit_state($order_id = null)
 	{
 		if ( ! $query = $this->order_model->select_data($order_id) ) {
-			redirect('admin/order');
+			redirect('korea/order');
 			return true;
 		}
 		$states = $this->state_model->select_all_data('asc');
 		if ( ! $data = $this->input->post() ) {
-			$this->load->view('admin/order_state_edit', array(
+			$this->load->view('korea/order_state_edit', array(
 				'query' => $query,
 				'states' => $states
 			));
@@ -206,7 +222,7 @@ class Order extends MY_Controller {
 		}
 		$data['order_id'] = $order_id;
 		$this->order_model->update_data($data);
-		redirect('admin/order/detail/'.$order_id);
+		redirect('korea/order/detail/'.$order_id);
 		return true;
 	}
 
@@ -214,7 +230,7 @@ class Order extends MY_Controller {
 	{
 		$states = $this->order_model->select_all_state();
 		if ( ! $data = $this->input->post() ) {
-			$this->load->view('admin/order_search', array(
+			$this->load->view('korea/order_search', array(
 				'states' => $states
 			));
 			return true;
@@ -237,7 +253,7 @@ class Order extends MY_Controller {
 			$value->total_price = $total_price;
 			$value->unsend = $unsend;
 		}
-		$this->load->view('admin/order_index', array(
+		$this->load->view('korea/order_index', array(
 			'orders' => $orders,
 			'data' => $data
 		));
@@ -268,7 +284,7 @@ class Order extends MY_Controller {
 			$value->total_price = $total_price;
 			$value->unsend = $unsend;
 		}
-		$this->load->view('admin/order_index', array(
+		$this->load->view('korea/order_index', array(
 			'orders' => $orders
 		));
 		return true;
