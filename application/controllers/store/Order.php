@@ -64,6 +64,11 @@ class Order extends MY_Controller {
 
 	public function create_sub($order_img_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
 				'message' => '無此子訂單'
@@ -98,6 +103,11 @@ class Order extends MY_Controller {
 
 	public function edit_sub($order_sub_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($this->order_sub_model->select_data($order_sub_id)->order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_sub_model->select_data($order_sub_id)) {
 			$this->load->view('failure', array(
 				'message' => '無此子訂單'
@@ -127,6 +137,11 @@ class Order extends MY_Controller {
 
 	public function delete_img($order_img_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id) ) {
 			$this->load->view('failure', array(
 				'message' => '查無此資料'
@@ -140,7 +155,7 @@ class Order extends MY_Controller {
 		return true;
 	}
 
-	public function submit($cross = 0) // $cross 是判斷說要不要跨好集單
+	public function submit($cross = 0) // $cross 是判斷說要不要跨號集單
 	{
 		// 空的不給送單
 		if ( empty($query = $this->order_img_model->select_by_userId($this->session->userdata('user_id')))) {
@@ -223,12 +238,22 @@ class Order extends MY_Controller {
 
 	public function detail($order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_model->select_data($order_id)->user_id) ) {
+			return false;
+		}
+
 		// 若連一個子訂單都沒有就自動刪除掉
 		if ( ! $query = $this->order_img_model->select_by_orderId($order_id) ) {
 			$this->order_model->delete_data($order_id);
 			redirect('store/order');
 			return true;
 		}
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($query[0]->user_id) ) {
+			return false;
+		}
+
 		foreach ($query as $key => $value) {
 			$value->order_subs = $this->order_sub_model->select_by_orderImgId($value->order_img_id);
 		}
@@ -243,6 +268,11 @@ class Order extends MY_Controller {
 
 	public function detail_delete_img($order_img_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		// 若處理了就無法編輯
 		if ( $this->order_model->select_data($order_id)->state_id > 1) {
 			redirect('store/order/detail/'.$order_id);
@@ -264,6 +294,10 @@ class Order extends MY_Controller {
 
 	public function detail_edit_sub($order_sub_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_model->select_data($order_id)->user_id) ) {
+			return false;
+		}
 		// 若處理了就無法編輯
 		if ( $this->order_model->select_data($order_id)->state_id > 1) {
 			redirect('store/order/detail/'.$order_id);
@@ -292,6 +326,11 @@ class Order extends MY_Controller {
 
 	public function detail_delete_sub($order_sub_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_model->select_data($order_id)->user_id) ) {
+			return false;
+		}
+
 		// 若處理了就無法編輯
 		if ( $this->order_model->select_data($order_id)->state_id > 1) {
 			redirect('store/order/detail/'.$order_id);
@@ -304,6 +343,11 @@ class Order extends MY_Controller {
 
 	public function detail_create_sub($order_img_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_model->select_data($order_id)->user_id) ) {
+			return false;
+		}
+
 		// 若處理了就無法編輯
 		if ( $this->order_model->select_data($order_id)->state_id > 1) {
 			redirect('store/order/detail/'.$order_id);
@@ -339,6 +383,11 @@ class Order extends MY_Controller {
 
 	public function message($order_img_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
 				'message' => '查無此子訂單'
@@ -360,6 +409,11 @@ class Order extends MY_Controller {
 
 	public function detail_message($order_img_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
 				'message' => '查無此子訂單'
@@ -381,6 +435,11 @@ class Order extends MY_Controller {
 
 	public function position($order_img_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
 				'message' => '查無此子訂單'
@@ -401,6 +460,11 @@ class Order extends MY_Controller {
 
 	public function detail_position($order_img_id = null, $order_id = null)
 	{
+		// 判斷是否為本人
+		if ( ! $this->is_yourself($this->order_img_model->select_data($order_img_id)->user_id) ) {
+			return false;
+		}
+
 		if ( ! $query = $this->order_img_model->select_data($order_img_id)) {
 			$this->load->view('failure', array(
 				'message' => '查無此子訂單'

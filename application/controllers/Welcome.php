@@ -15,9 +15,4 @@ class Welcome extends CI_Controller {
 		redirect();
 		return true;
 	}
-
-	public function printd()
-	{
-		$this->load->view('print');
-	}
 }

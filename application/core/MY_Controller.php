@@ -6,6 +6,15 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
 	}
 
+	protected function is_yourself($user_id = null)
+	{
+		if ( $user_id != $this->session->userdata('user_id')) {
+			redirect('welcome/logout');
+			return false;
+		}
+		return true;
+	}
+
 	protected function check_korea()
 	{
 		if ( $this->session->userdata('ident') != 'korea') {

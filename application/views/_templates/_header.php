@@ -10,7 +10,7 @@
   <?php if (isset($title)): ?>
     <title class="visible-print-block"><?=$title?></title>
   <?php else: ?>
-    <title class="visible-print-block">Framework for Piece.</title>
+    <title class="visible-print-block">貨運系統</title>
   <?php endif ?>
   <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/bootstrap.min.css')?>">
   <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/animate.css')?>">

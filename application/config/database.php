@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 
-$active_group = 'production';
+$active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
@@ -86,7 +86,7 @@ $db['default'] = array(
 
 $db['production'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'MYSQL5005.Smarterasp.net',
 	'username' => '9b8948_tw',
 	'password' => '58585888',
 	'database' => 'db_9b8948_tw',
