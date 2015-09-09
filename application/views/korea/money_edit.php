@@ -5,7 +5,7 @@
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">日期</label>
     <div class="col-sm-9">
-      <input type="date" name="date" class="form-control" value="<?= $query->date?>">
+      <input type="date" name="date" class="form-control" value="<?php echo  $query->date?>">
     </div>
   </div>
   <div class="form-group">
@@ -14,10 +14,10 @@
       <select name="user_id" class="form-control">
       	<?php foreach ($users as $value): ?>
           <?php if ( $value->user_id == $query->user_id): ?>
-            <option value="<?= $value->user_id?>" selected><?= $value->company?></option>  
+            <option value="<?php echo  $value->user_id?>" selected><?php echo  $value->company?></option>  
             <?php continue ?>
           <?php endif ?>
-      		<option value="<?= $value->user_id?>"><?= $value->company?></option>
+      		<option value="<?php echo  $value->user_id?>"><?php echo  $value->company?></option>
       	<?php endforeach ?>
       </select>
     </div>
@@ -25,25 +25,25 @@
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">存入金額</label>
     <div class="col-sm-9">
-      <input type="number" name="save_money" class="form-control" value="<?= $query->save_money?>">
+      <input type="number" name="save_money" class="form-control" value="<?php echo  $query->save_money?>">
     </div>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">使用金額</label>
     <div class="col-sm-9">
-      <input type="number" name="use_money" class="form-control" value="<?= $query->use_money?>">
+      <input type="number" name="use_money" class="form-control" value="<?php echo  $query->use_money?>">
     </div>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">kg</label>
     <div class="col-sm-9">
-      <input type="text" name="kg" class="form-control" value="<?=$query->kg?>">
+      <input type="text" name="kg" class="form-control" value="<?php echo $query->kg?>">
     </div>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">使用明細</label>
     <div class="col-sm-9">
-      <input type="text" name="detail" class="form-control" value="<?= $query->detail?>">
+      <input type="text" name="detail" class="form-control" value="<?php echo  $query->detail?>">
     </div>
   </div>
   <div class="form-group">

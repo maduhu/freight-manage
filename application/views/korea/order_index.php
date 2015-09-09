@@ -5,18 +5,18 @@
 		<div class="alert alert-info" role="alert">
 			<h3 style="margin:0;">搜尋: </h3>
 			<?php if (isset($data['opt1'])): ?>
-				<p>日期: <?=$data['start_date']?> ~ <?=$data['end_date']?></p>
+				<p>日期: <?php echo $data['start_date']?> ~ <?php echo $data['end_date']?></p>
 			<?php endif ?>	
 			<?php if (isset($data['opt2'])): ?>
-				<p>處理狀態: <?= $data['state_id']?></p>
+				<p>處理狀態: <?php echo  $data['state_id']?></p>
 			<?php endif ?>
 			<?php if (isset($data['opt3'])): ?>
-				<p>關鍵字: <?= $data['keyword']?></p>
+				<p>關鍵字: <?php echo  $data['keyword']?></p>
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('korea/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
-	<a href="<?=base_url('korea/order/all_unsend')?>" class="btn btn-warning pull-right" style="margin:0 20px;">查看所有未送</a>
+	<a href="<?php echo base_url('korea/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
+	<a href="<?php echo base_url('korea/order/all_unsend')?>" class="btn btn-warning pull-right" style="margin:0 20px;">查看所有未送</a>
 	<br><br>
 	<table class="table table-hover">
 		<tr class="info">
@@ -34,11 +34,11 @@
 		</tr>
 		<?php foreach ($orders as $key => $value): ?>
 			<tr>
-				<td><?= $value->create_time?></td>
-				<td><?= $value->company?></td>
-				<td><?= $value->user_name?></td>
-				<td><?= $value->order_id?></td>
-				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
+				<td><?php echo  $value->create_time?></td>
+				<td><?php echo  $value->company?></td>
+				<td><?php echo  $value->user_name?></td>
+				<td><?php echo  $value->order_id?></td>
+				<td class="text-danger">$ <?php echo  number_format($value->total_price)?></td>
 				<?php if ($value->total_price > 100000000): ?>
 					<?php $fee = $value->total_price * 0.06 ?>
 				<?php endif ?>
@@ -48,16 +48,16 @@
 				<?php if ($value->total_price <= 5000000): ?>
 					<?php $fee = $value->total_price * 0.08 ?>
 				<?php endif ?>
-				<td class="text-success">$ <?= number_format($fee)?></td>
-				<td><?= $value->state_name?></td>
-				<td style="color:red;"><?= ($value->unsend > 0) ? $value->unsend : ''?></td>
+				<td class="text-success">$ <?php echo  number_format($fee)?></td>
+				<td><?php echo  $value->state_name?></td>
+				<td style="color:red;"><?php echo  ($value->unsend > 0) ? $value->unsend : ''?></td>
 				<td>
 					<?php if ($value->cross): ?>
 						<span class="glyphicon glyphicon-ok"></span>
 					<?php endif ?>
 				</td>	
-				<td><a href="<?= base_url('korea/order/detail/'.$value->order_id)?>" class="btn btn-success">詳細狀況</a></td>
-				<td><a href="javascript:if(confirm('確定要刪除此訂單？'))location.href='<?= base_url('korea/order/delete/'.$value->order_id)?>'" class="btn btn-danger">X</a></td>	
+				<td><a href="<?php echo  base_url('korea/order/detail/'.$value->order_id)?>" class="btn btn-success">詳細狀況</a></td>
+				<td><a href="javascript:if(confirm('確定要刪除此訂單？'))location.href='<?php echo  base_url('korea/order/delete/'.$value->order_id)?>'" class="btn btn-danger">X</a></td>	
 			</tr>
 		<?php endforeach ?>
 	</table>

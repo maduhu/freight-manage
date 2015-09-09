@@ -4,7 +4,7 @@
 	<form action="" method="post">
 		<div class="form-group">
 			<label for="" class="">留言</label>
-			<textarea name="store_message" id="" cols="30" rows="10" class="form-control"><?= $store_message?></textarea>
+			<textarea name="store_message" id="" cols="30" rows="10" class="form-control"><?php echo  $store_message?></textarea>
 		</div>
 		<div class="form-group text-center">
 			<button class="btn btn-primary" type="submit">送出</button>

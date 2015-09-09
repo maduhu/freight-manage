@@ -6,7 +6,7 @@
     <label for="" class="col-sm-2 control-label">日期</label>
     <div class="col-sm-9">
     	<?php date_default_timezone_set("Asia/Taipei"); ?>
-      <input type="date" name="date" class="form-control" value="<?=date('Y-m-d')?>">
+      <input type="date" name="date" class="form-control" value="<?php echo date('Y-m-d')?>">
     </div>
   </div>
   <div class="form-group">
@@ -14,11 +14,11 @@
     <div class="col-sm-8">
       <select name="user_id" class="form-control">
       	<?php foreach ($users as $value): ?>
-      		<option value="<?= $value->user_id?>" <?php if($value->user_id == $user_id) echo 'selected'?> ><?= $value->company?></option>
+      		<option value="<?php echo  $value->user_id?>" <?php if($value->user_id == $user_id) echo 'selected'?> ><?php echo  $value->company?></option>
       	<?php endforeach ?>
       </select>
     </div>
-    <a href="<?=base_url('korea/money/create_search')?>" class="btn btn-warning">搜尋公司</a>
+    <a href="<?php echo base_url('korea/money/create_search')?>" class="btn btn-warning">搜尋公司</a>
   </div>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">存入金額</label>

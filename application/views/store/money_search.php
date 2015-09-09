@@ -8,11 +8,11 @@
 				<td>
 					<label for="" class="col-xs-2">起始時間</label>
 					<div class="col-sm-4">
-						<input type="date" class="form-control" name="start_date" value="<?= date('Y-m-d')?>">
+						<input type="date" class="form-control" name="start_date" value="<?php echo  date('Y-m-d')?>">
 					</div>
 					<label for="" class="col-xs-2">結束時間</label>
 					<div class="col-sm-4">
-						<input type="date" class="form-control" name="end_date" value="<?= date('Y-m-d')?>">
+						<input type="date" class="form-control" name="end_date" value="<?php echo  date('Y-m-d')?>">
 					</div>
 				</td>
 			</tr>

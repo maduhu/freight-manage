@@ -6,10 +6,10 @@
 	<select name="state_id" class="form-control">
 	<?php foreach ($states as $key => $value): ?>
 		<?php if ($value->state_id == $query->state_id): ?>
-			<option value="<?=$value->state_id?>" selected><?=$value->state_name?></option>	
+			<option value="<?php echo $value->state_id?>" selected><?php echo $value->state_name?></option>	
 			<?php continue ?>
 		<?php endif ?>
-		<option value="<?=$value->state_id?>"><?=$value->state_name?></option>
+		<option value="<?php echo $value->state_id?>"><?php echo $value->state_name?></option>
 	<?php endforeach ?>
 	</select>
 	<br>

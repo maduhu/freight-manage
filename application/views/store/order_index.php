@@ -5,17 +5,17 @@
 		<div class="alert alert-info" role="alert">
 			<h3 style="margin:0;">搜尋: </h3>
 			<?php if (isset($data['opt1'])): ?>
-				<p>日期: <?=$data['start_date']?> ~ <?=$data['end_date']?></p>
+				<p>日期: <?php echo $data['start_date']?> ~ <?php echo $data['end_date']?></p>
 			<?php endif ?>	
 			<?php if (isset($data['opt2'])): ?>
-				<p>處理狀態: <?= $data['state_id']?></p>
+				<p>處理狀態: <?php echo  $data['state_id']?></p>
 			<?php endif ?>
 			<?php if (isset($data['opt3'])): ?>
-				<p>關鍵字: <?= $data['keyword']?></p>
+				<p>關鍵字: <?php echo  $data['keyword']?></p>
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('store/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
+	<a href="<?php echo base_url('store/order/search')?>" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-search"></span> 搜尋</a>	
 	<br><br>
 	<table class="table table-hover">
 		<tr class="success">
@@ -31,11 +31,11 @@
 		</tr>
 		<?php foreach ($orders as $key => $value): ?>
 			<tr>
-				<td><?= $value->create_time?></td>
-				<td><?= $value->company?></td>
-				<td><?= $value->user_name?></td>
-				<td><?= $value->order_id?></td>
-				<td class="text-danger">$ <?= number_format($value->total_price)?></td>
+				<td><?php echo  $value->create_time?></td>
+				<td><?php echo  $value->company?></td>
+				<td><?php echo  $value->user_name?></td>
+				<td><?php echo  $value->order_id?></td>
+				<td class="text-danger">$ <?php echo  number_format($value->total_price)?></td>
 				<?php if ($value->total_price > 100000000): ?>
 					<?php $fee = $value->total_price * 0.06 ?>
 				<?php endif ?>
@@ -45,14 +45,14 @@
 				<?php if ($value->total_price <= 5000000): ?>
 					<?php $fee = $value->total_price * 0.08 ?>
 				<?php endif ?>
-				<td class="text-success">$ <?= number_format($fee)?></td>
-				<td><?= $value->state_name?></td>
+				<td class="text-success">$ <?php echo  number_format($fee)?></td>
+				<td><?php echo  $value->state_name?></td>
 				<td>
 					<?php if ($value->cross): ?>
 						<span class="glyphicon glyphicon-ok"></span>
 					<?php endif ?>
 				</td>	
-				<td><a href="<?= base_url('store/order/detail/'.$value->order_id)?>" class="btn btn-primary">詳細狀況</a></td>
+				<td><a href="<?php echo  base_url('store/order/detail/'.$value->order_id)?>" class="btn btn-primary">詳細狀況</a></td>
 			</tr>
 		<?php endforeach ?>
 	</table>

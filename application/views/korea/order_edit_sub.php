@@ -12,29 +12,29 @@
 		<div class="form-group">
 	    <label class="text-danger">日期</label>
 	    <?php  date_default_timezone_set("Asia/Taipei") ?>
-	    <input type="date" name="sub_state_date" class="form-control" value="<?=($query->sub_state_date != '0000-00-00') ? $query->sub_state_date : date('Y-m-d')?>">
+	    <input type="date" name="sub_state_date" class="form-control" value="<?php echo ($query->sub_state_date != '0000-00-00') ? $query->sub_state_date : date('Y-m-d')?>">
 	  </div>
 	  <br><br>
 		<div class="form-group">
 	    <label>顏色</label>
-	    <input type="text" name="color" class="form-control" value="<?=$query->color?>">
+	    <input type="text" name="color" class="form-control" value="<?php echo $query->color?>">
 	  </div>
 	  <div class="form-group">
 	    <label>尺寸</label>
-	    <input type="text" name="size" class="form-control" value="<?=$query->size?>">
+	    <input type="text" name="size" class="form-control" value="<?php echo $query->size?>">
 	  </div>
 	  <div class="form-group">
 	    <label>數量</label>
-	    <input type="number" name="amount" class="form-control" value="<?=$query->amount?>">
+	    <input type="number" name="amount" class="form-control" value="<?php echo $query->amount?>">
 	  </div>
 	  <div class="form-group">
 	    <label>單價</label>
-	    <input type="number" name="price" class="form-control" value="<?=$query->price?>">
+	    <input type="number" name="price" class="form-control" value="<?php echo $query->price?>">
 	  </div>
 	  <br><br>
 	  <button type="submit" class="btn btn-primary">送出</button>
 	</form>
 	<hr>
-	<img src="<?= base_url($image)?>" class="img-responsive" style="margin:0 auto;">
+	<img src="<?php echo  base_url($image)?>" class="img-responsive" style="margin:0 auto;">
 </section>
 <?php require_once VIEWPATH.'_templates/_footer.php' ?>

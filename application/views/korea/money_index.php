@@ -6,17 +6,17 @@
 		<div class="alert alert-info" role="alert">
 			<h3 style="margin:0;">搜尋: </h3>
 			<?php if (isset($data['opt1'])): ?>
-				<p>日期: <?=$data['start_date']?> ~ <?=$data['end_date']?></p>
+				<p>日期: <?php echo $data['start_date']?> ~ <?php echo $data['end_date']?></p>
 			<?php endif ?>	
 			<?php if (isset($data['opt2'])): ?>
-				<p>公司: <?= $data['company_name']?></p>
+				<p>公司: <?php echo  $data['company_name']?></p>
 			<?php endif ?>
 			<?php if (isset($data['opt3'])): ?>
-				<p>關鍵字: <?= $data['keyword']?></p>
+				<p>關鍵字: <?php echo  $data['keyword']?></p>
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<a href="<?=base_url('korea/money/search')?>" class="btn btn-primary pull-right">搜尋</a>	
+	<a href="<?php echo base_url('korea/money/search')?>" class="btn btn-primary pull-right">搜尋</a>	
 	<br><br>
 
 	<table class="table table-striped">
@@ -53,18 +53,18 @@
 
 		<?php foreach ($moneys as $value): ?>
 			<tr>
-				<td><?= $value->date?></td>
-				<td><?= $value->company?></td>	
-				<td class="text-success"><?= number_format($value->save_money)?></td>	
-				<td class="text-info"><?= number_format($value->use_money)?></td>	
-				<td class="text-danger"><?= number_format($value->balance)?></td>
-				<td><?= $value->kg?></td>	
-				<td><?= $value->detail?></td>
-				<td><a href="<?= base_url('korea/money/edit/'.$value->money_id)?>" class="btn btn-warning">編輯</a></td>
-				<td><a href="javascript:if(confirm('確定要刪除嗎？'))location.href='<?= base_url('korea/money/delete/'.$value->money_id)?>'" class="btn btn-danger">刪除</a></td>
+				<td><?php echo  $value->date?></td>
+				<td><?php echo  $value->company?></td>	
+				<td class="text-success"><?php echo  number_format($value->save_money)?></td>	
+				<td class="text-info"><?php echo  number_format($value->use_money)?></td>	
+				<td class="text-danger"><?php echo  number_format($value->balance)?></td>
+				<td><?php echo  $value->kg?></td>	
+				<td><?php echo  $value->detail?></td>
+				<td><a href="<?php echo  base_url('korea/money/edit/'.$value->money_id)?>" class="btn btn-warning">編輯</a></td>
+				<td><a href="javascript:if(confirm('確定要刪除嗎？'))location.href='<?php echo  base_url('korea/money/delete/'.$value->money_id)?>'" class="btn btn-danger">刪除</a></td>
 			</tr>
 		<?php endforeach ?>
 	</table>
-	<h3 class="text-center">結餘：<?=number_format($total)?></h3>
+	<h3 class="text-center">結餘：<?php echo number_format($total)?></h3>
 </section>
 <?php require_once VIEWPATH.'_templates/_footer.php' ?>

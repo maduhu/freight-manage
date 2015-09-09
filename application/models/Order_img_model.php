@@ -25,6 +25,7 @@ class Order_img_model extends MY_Model {
 		$this->db->join('order_imgs', 'orders.order_id = order_imgs.order_id');
 		$this->db->where('orders.order_id', $order_id);
 		$this->db->order_by('order_imgs.position', 'asc');
+		$this->db->order_by('order_imgs.position_desc', 'asc');
 		$query = $this->db->get();
 		return $query->result();
 	}

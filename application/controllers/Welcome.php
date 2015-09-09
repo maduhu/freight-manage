@@ -15,4 +15,9 @@ class Welcome extends CI_Controller {
 		redirect();
 		return true;
 	}
+
+	public function korea()
+	{
+		$this->load->view('welcome_korea');
+	}
 }

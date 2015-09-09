@@ -20,6 +20,6 @@
 	  <button type="submit" class="btn btn-primary">送出</button>
 	</form>
 	<hr>
-	<img src="<?= base_url($query->image)?>" class="img-responsive" style="margin:0 auto;">
+	<img src="<?php echo  base_url($query->image)?>" class="img-responsive" style="margin:0 auto;">
 </section>
 <?php require_once VIEWPATH.'_templates/_footer.php' ?>

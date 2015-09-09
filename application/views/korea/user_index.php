@@ -3,12 +3,12 @@
 	echo " - 搜尋: ".$keyword;
 }?></h2>
 <section class="container text-center">
-	<a href="<?= base_url('korea/user/create')?>" class="btn btn-primary pull-right">新增會員</a>
+	<a href="<?php echo  base_url('korea/user/create')?>" class="btn btn-primary pull-right">新增會員</a>
 	<div class="row text-center">
 	  <div class="col-lg-4">
-		  <form action="<?= base_url('korea/user/search')?>" method="post">
+		  <form action="<?php echo  base_url('korea/user/search')?>" method="post">
 		    <div class="input-group">
-		      <input type="text" name="keyword" class="form-control" placeholder="Search for..." value="<?= @$keyword?>">
+		      <input type="text" name="keyword" class="form-control" placeholder="Search for..." value="<?php echo  @$keyword?>">
 		      <span class="input-group-btn">
 		        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
 		      </span>
@@ -29,12 +29,12 @@
 		</tr>
 		<?php foreach ($users as $key => $value): ?>
 			<tr>
-				<td><?= $value->company ?></td>
-				<td><?= $value->user_name?></td>
-				<td><?= $value->telephone?></td>
-				<td><?= $value->email?></td>
-				<td><a href="<?= base_url('korea/user/edit/'.$value->user_id)?>" class="btn btn-warning">編輯</a></td>
-				<td><a href="javascript:if(confirm('確定刪除？'))location.href='<?= base_url('korea/user/delete/'.$value->user_id)?>'" class="btn btn-danger">刪除</a></td>
+				<td><?php echo  $value->company ?></td>
+				<td><?php echo  $value->user_name?></td>
+				<td><?php echo  $value->telephone?></td>
+				<td><?php echo  $value->email?></td>
+				<td><a href="<?php echo  base_url('korea/user/edit/'.$value->user_id)?>" class="btn btn-warning">編輯</a></td>
+				<td><a href="javascript:if(confirm('確定刪除？'))location.href='<?php echo  base_url('korea/user/delete/'.$value->user_id)?>'" class="btn btn-danger">刪除</a></td>
 			</tr>
 		<?php endforeach ?>
 	</table>

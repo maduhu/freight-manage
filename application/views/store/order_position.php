@@ -11,7 +11,7 @@
 	</select>
 	<br>
 	<label for="">位置描述</label>
-	<input type="text" name="position_desc" class="form-control" placeholder="例如 2F-2" value="<?=$query->position_desc?>">
+	<input type="text" name="position_desc" class="form-control" placeholder="例如 2F-2" value="<?php echo $query->position_desc?>">
 	<br>
 	<div class="text-center">
 		<button type="submit" class="btn btn-primary">送出</button>
